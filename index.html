@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아르델리스 기사단 - 등장인물 소개</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #121418;
+            --card-bg: #1e2126;
+            --gold-light: #f9d976;
+            --gold-dark: #e1b343;
+            --text-main: #e8e8e8;
+            --text-sub: #a0a0a0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Noto Serif KR', serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 크고 눈에 띄게 변경된 BGM 컨트롤러 (최상단 12시 고정) */
+        .bgm-controller {
+            position: fixed; 
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(30, 33, 38, 0.9);
+            padding: 12px 28px;
+            border: 2px solid rgba(225, 179, 67, 0.4);
+            border-radius: 40px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+        }
+
+        .bgm-label {
+            font-size: 1.1rem;
+            color: var(--gold-dark);
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        .bgm-btn {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s ease, transform 0.2s ease;
+            outline: none;
+            letter-spacing: 1px;
+        }
+
+        .bgm-btn:hover {
+            color: var(--gold-light);
+            transform: scale(1.1);
+        }
+
+        header {
+            text-align: center;
+            padding: 90px 20px 40px; 
+            background: linear-gradient(to bottom, #0a0b0d, transparent);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            background: linear-gradient(to right, var(--gold-light), var(--gold-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 4px 15px rgba(225, 179, 67, 0.2);
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-sub);
+            margin-top: 10px;
+            letter-spacing: 5px;
+        }
+
+        .header-line {
+            width: 150px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--gold-dark), transparent);
+            margin: 20px auto;
+        }
+
+        .group-section {
+            max-width: 1300px;
+            margin: 0 auto 70px;
+            padding: 0 20px;
+        }
+
+        .group-title {
+            text-align: center;
+            font-size: 1.8rem;
+            color: var(--gold-light);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            letter-spacing: 2px;
+        }
+
+        .group-title::before,
+        .group-title::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold-dark), transparent);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            width: 100%;
+        }
+
+        .section-divider {
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(225, 179, 67, 0.4), transparent);
+            margin: 10px 0;
+        }
+
+        .character-card {
+            width: 310px;
+            background-color: var(--card-bg);
+            border: 1px solid rgba(225, 179, 67, 0.15);
+            border-radius: 8px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .character-card:hover {
+            border-color: rgba(225, 179, 67, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+
+        .img-wrapper {
+            width: 100%;
+            aspect-ratio: 4 / 5;
+            position: relative;
+            border-radius: 4px;
+            z-index: 1;
+        }
+
+        .img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #333;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+            transform-origin: center center;
+            cursor: pointer;
+        }
+
+        .character-card:hover .img-wrapper img {
+            transform: scale(1.35);
+            z-index: 100;
+            position: relative;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.9);
+            border: 1px solid var(--gold-dark);
+        }
+
+        .info-wrapper {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            margin-top: 5px;
+        }
+
+        .name-role {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 5px;
+        }
+
+        .name {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--gold-light);
+            margin: 0;
+        }
+
+        .role {
+            font-size: 1rem;
+            color: var(--text-main);
+            padding-bottom: 3px;
+        }
+
+        .flavor-text {
+            font-size: 0.94rem;
+            color: #d1d1d1;
+            background: rgba(225, 179, 67, 0.05);
+            padding: 12px 14px;
+            border-left: 2px solid var(--gold-dark);
+            margin: 5px 0 10px 0;
+            line-height: 1.6;
+            word-break: keep-all;
+            border-radius: 0 4px 4px 0;
+            font-style: normal;
+        }
+
+        .flavor-text br {
+            display: block;
+            margin-top: 4px;
+            content: "";
+        }
+
+        .stats-wrapper {
+            margin-top: auto; 
+            width: 100%;
+        }
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, rgba(225, 179, 67, 0.6), transparent);
+            margin: 5px 0 15px 0;
+        }
+
+        .stats-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.95rem;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .stat-label {
+            width: 65px;
+            min-width: 65px;
+            color: var(--gold-dark);
+            font-weight: 700;
+        }
+
+        .stat-value {
+            color: var(--text-sub);
+        }
+
+        @media (max-width: 768px) {
+            .bgm-controller {
+                top: 10px;
+                padding: 10px 20px;
+                gap: 12px;
+            }
+            .bgm-label {
+                font-size: 1rem;
+            }
+            .bgm-btn {
+                font-size: 1rem;
+            }
+            header {
+                padding-top: 80px;
+            }
+            .character-card {
+                width: 100%;
+                max-width: 380px;
+            }
+            .character-card:hover .img-wrapper img {
+                transform: scale(1.15); 
+            }
+            .group-title {
+                font-size: 1.5rem;
+            }
+            .group-title::before,
+            .group-title::after {
+                width: 30px;
+            }
+            .section-divider {
+                width: 80%;
+            }
+            .flavor-text {
+                font-size: 0.9rem; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div style="position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden;">
+        <iframe id="sc-widget" width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" 
+            src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/669914306&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true">
+        </iframe>
+    </div>
+
+    <div class="bgm-controller">
+        <span class="bgm-label">BGM</span>
+        <button id="bgm-play" class="bgm-btn" onclick="toggleBGM(true)">▶ 재생</button>
+        <button id="bgm-pause" class="bgm-btn" onclick="toggleBGM(false)" style="display:none;">⏸ 정지</button>
+    </div>
+
+    <header>
+        <h1>아르델리스 기사단</h1>
+        <div class="header-line"></div>
+        <div class="subtitle">CHARACTERS INTRODUCTION</div>
+    </header>
+
+    <main>
+        <section class="group-section">
+            <h2 class="group-title">황실</h2>
+            <div class="container">
+                <div class="row">
+                    <article class="character-card">
+                        <div class="img-wrapper"><img src="https://drlum.net/kni/o101.png" alt="옥타비아"></div>
+                        <div class="info-wrapper">
+                            <div class="name-role">
+                                <h2 class="name">옥타비아</h2>
+                                <span class="role">여왕</span>
+                            </div>
+                            <div class="flavor-text">황실 회의가 그저 지루하기만 한 여왕님.<br>왠지 모르게 성녀 대하기가 늘 껄끄럽다.</div>
+                            <div class="stats-wrapper">
+                                <div class="divider"></div>
+                                <ul class="stats-list">
+                                    <li class="stat-item"><span class="stat-label">연령</span><span class="stat-value">28세</span></li>
+                                    <li class="stat-item"><span class="stat-label">외모</span><span class="stat-value">162cm · 48kg · E컵</span></li>
+                                    <li class="stat-item"><span class="stat-label">MBTI</span><span class="stat-value">ENFP-A · 7w8 so/sp</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="character-card">
+                        <div class="img-wrapper"><img src="https://drlum.net/kni/l102.png" alt="레이나"></div>
+                        <div class="info-wrapper">
+                            <div class="name-role">
+                                <h2 class="name">레이나</h2>
+                                <span class="role">보좌관</span>
+                            </div>
+                            <div class="flavor-text">여왕님 덕에 하루하루<br>조용할 날이 없는 보좌관.</div>
+                            <div class="stats-wrapper">
+                                <div class="divider"></div>
+                                <ul class="stats-list">
+                                    <li class="stat-item"><span class="stat-label">연령</span><span class="stat-value">32세</span></li>
+                                    <li class="stat-item"><span class="stat-label">외모</span><span class="stat-value">161cm · 48kg · D컵</span></li>
+                                    <li class="stat-item"><span class="stat-label">MBTI</span><span class="stat-value">INFJ-T · 1w9 so/sp</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                
+                <div class="section-divider"></div>
+
+                <div class="row">
+                    <article class="character-card">
+                        <div class="img-wrapper"><img src="https://drlum.net/kni/d101.png" alt="드뷔에"></div>
+                        <div class="info-wrapper">
+                            <div class="name-role">
+                                <h2 class="name">드뷔에</h2>
+                                <span class="role">성녀</span>
+                            </div>
+                            <div class="flavor-text">성녀라는 이름의 축복, 혹은 낙인.<br>자신을 은근 꺼려하는 여왕을 피해다닌다.</div>
+                            <div class="stats-wrapper">
+                                <div class="divider"></div>
+                                <ul class="stats-list">
+                                    <li class="stat-item"><span class="stat-label">연령</span><span class="stat-value">23세</span></li>
+                                    <li class="stat-item"><span class="stat-label">외모</span><span class="stat-value">152cm · 43kg · C컵</span></li>
+                                    <li class="stat-item"><span class="stat-label">MBTI</span><span class="stat-value">INTJ-A · 8w7 sp/so</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="group-section">
+            <h2 class="group-title">기사단</h2>
+            <div class="container">
+                <div class="row">
+                    <article class="character-card">
+                        <div class="img-wrapper"><img src="https://drlum.net/kni/h101.png" alt="헨릭"></div>
+                        <div class="info-wrapper">
+                            <div class="name-role">
+                                <h2 class="name">헨릭</h2>
+                                <span class="role">기사단장</span>
+                            </div>
+                            <div class="flavor-text">매일 서류에 묻혀 사는<br>왕국 최고 기사.</div>
+                            <div class="stats-wrapper">
+                                <div class="divider"></div>
+                                <ul class="stats-list">
+                                    <li class="stat-item"><span class="stat-label">연령</span><span class="stat-value">39세</span></li>
+                                    <li class="stat-item"><span class="stat-label">외모</span><span class="stat-value">190cm · 88kg</span></li>
+                                    <li class="stat-item"><span class="stat-label">MBTI</span><span class="stat-value">ESTJ-A · 8w9 so/sp</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="character-card">
+                        <div class="img-wrapper"><img src="https://drlum.net/kni/s101.png" alt="샬롯"></div>
+                        <div class="info-wrapper">
+                            <div class="name-role">
+                                <h2 class="name">샬롯</h2>
+                                <span class="role">부 기사단장</span>
+                            </div>
+                            <div class="flavor-text">절대 잘못 걸리고 싶지 않은<br>FM 부 기사단장님.</div>
+                            <div class="stats-wrapper">
+                                <div class="divider"></div>
+                                <ul class="stats-list">
+                                    <li class="stat-item"><span class="stat-label">연령</span><span class="stat-value">28세</span></li>
+                                    <li class="stat-item"><span class="stat-label">외모</span><span class="stat-value">154cm · 44kg · C컵</span></li>
+                                    <li class="stat-item"><span class="stat-label">MBTI</span><span class="stat-value">ISTJ-T · 6w5 sp/so</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="row">
+                    <article class="character-card">
+                        <div class="img-wrapper"><img src="https://drlum.net/kni/n101.png" alt="노아"></div>
+                        <div class="info-wrapper">
+                            <div class="name-role">
+                                <h2 class="name">노아</h2>
+                                <span class="role">기사</span>
+                            </div>
+                            <div class="flavor-text">자기도 자기 마음을<br>모르겠는 위험천만 소녀.</div>
+                            <div class="stats-wrapper">
+                                <div class="divider"></div>
+                                <ul class="stats-list">
+                                    <li class="stat-item"><span class="stat-label">연령</span><span class="stat-value">24세</span></li>
+                                    <li class="stat-item"><span class="stat-label">외모</span><span class="stat-value">158cm · 46kg · D컵</span></li>
+                                    <li class="stat-item"><span class="stat-label">MBTI</span><span class="stat-value">ESFJ-T · 6w7 sp/so</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="character-card">
+                        <div class="img-wrapper"><img src="https://drlum.net/kni/p101.png" alt="플루토"></div>
+                        <div class="info-wrapper">
+                            <div class="name-role">
+                                <h2 class="name">플루토</h2>
+                                <span class="role">기사</span>
+                            </div>
+                            <div class="flavor-text">항상 웃음을 잃지 않는 기사단의 비타민.<br>그저 좋은 게 좋은 긍정 소녀.</div>
+                            <div class="stats-wrapper">
+                                <div class="divider"></div>
+                                <ul class="stats-list">
+                                    <li class="stat-item"><span class="stat-label">연령</span><span class="stat-value">24세</span></li>
+                                    <li class="stat-item"><span class="stat-label">외모</span><span class="stat-value">155cm · 44kg · C컵</span></li>
+                                    <li class="stat-item"><span class="stat-label">MBTI</span><span class="stat-value">ESFP-A · 7w6 so/sp</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="character-card">
+                        <div class="img-wrapper"><img src="https://drlum.net/kni/u108.png" alt="유리엘"></div>
+                        <div class="info-wrapper">
+                            <div class="name-role">
+                                <h2 class="name">유리엘</h2>
+                                <span class="role">기사</span>
+                            </div>
+                            <div class="flavor-text">숙부인 전직 용사의 억지로 하루아침에<br>의남매 오빠가 생겨버린 소녀.<br>(여캐플 모드 시 주인공)</div>
+                            <div class="stats-wrapper">
+                                <div class="divider"></div>
+                                <ul class="stats-list">
+                                    <li class="stat-item"><span class="stat-label">연령</span><span class="stat-value">24세</span></li>
+                                    <li class="stat-item"><span class="stat-label">외모</span><span class="stat-value">153cm · 43kg · C컵</span></li>
+                                    <li class="stat-item"><span class="stat-label">MBTI</span><span class="stat-value">ISFP-T · 4w3 sx/sp</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="row">
+                    <article class="character-card">
+                        <div class="img-wrapper"><img src="https://drlum.net/kni/k101.png" alt="카리우스"></div>
+                        <div class="info-wrapper">
+                            <div class="name-role">
+                                <h2 class="name">카리우스</h2>
+                                <span class="role">기사</span>
+                            </div>
+                            <div class="flavor-text">언제 어디서나 우아함을 잃지 않는,<br>자기애 넘치는 엘레강스 왕자병 기사님.</div>
+                            <div class="stats-wrapper">
+                                <div class="divider"></div>
+                                <ul class="stats-list">
+                                    <li class="stat-item"><span class="stat-label">연령</span><span class="stat-value">24세</span></li>
+                                    <li class="stat-item"><span class="stat-label">외모</span><span class="stat-value">186cm · 85kg</span></li>
+                                    <li class="stat-item"><span class="stat-label">MBTI</span><span class="stat-value">ENTJ-A · 3w2 so/sp</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="character-card">
+                        <div class="img-wrapper"><img src="https://drlum.net/kni/w101.png" alt="윌리안"></div>
+                        <div class="info-wrapper">
+                            <div class="name-role">
+                                <h2 class="name">윌리안</h2>
+                                <span class="role">기사</span>
+                            </div>
+                            <div class="flavor-text">만사가 귀찮다. 제발 아무도 자신을<br>귀찮게 하지 않기를 바라는 은둔 지향 기사.</div>
+                            <div class="stats-wrapper">
+                                <div class="divider"></div>
+                                <ul class="stats-list">
+                                    <li class="stat-item"><span class="stat-label">연령</span><span class="stat-value">24세</span></li>
+                                    <li class="stat-item"><span class="stat-label">외모</span><span class="stat-value">184cm · 84kg</span></li>
+                                    <li class="stat-item"><span class="stat-label">MBTI</span><span class="stat-value">INTP-A · 5w6 sp/so</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="character-card">
+                        <div class="img-wrapper"><img src="https://drlum.net/kni/a101.png" alt="아론"></div>
+                        <div class="info-wrapper">
+                            <div class="name-role">
+                                <h2 class="name">아론</h2>
+                                <span class="role">기사</span>
+                            </div>
+                            <div class="flavor-text">하루아침에 기사단에 낙하산 꽂혀버린<br>유리엘의 의남매 오라버니.<br>(여캐플 모드에서만 등장하는 남주)</div>
+                            <div class="stats-wrapper">
+                                <div class="divider"></div>
+                                <ul class="stats-list">
+                                    <li class="stat-item"><span class="stat-label">연령</span><span class="stat-value">26세</span></li>
+                                    <li class="stat-item"><span class="stat-label">외모</span><span class="stat-value">189cm · 87kg</span></li>
+                                    <li class="stat-item"><span class="stat-label">MBTI</span><span class="stat-value">INTJ-A · 1w9 sp/so</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="group-section">
+            <h2 class="group-title">귀족</h2>
+            <div class="container">
+                <div class="row">
+                    <article class="character-card">
+                        <div class="img-wrapper"><img src="https://drlum.net/kni/v101.png" alt="베르티"></div>
+                        <div class="info-wrapper">
+                            <div class="name-role">
+                                <h2 class="name">베르티</h2>
+                                <span class="role">부호</span>
+                            </div>
+                            <div class="flavor-text">오래전 남편을 잃고 딸인 엘리제만<br>바라보며 사는 과부.<br>남편의 보석 사업을 이어야 하지만<br>장사에 영 소질 없다.</div>
+                            <div class="stats-wrapper">
+                                <div class="divider"></div>
+                                <ul class="stats-list">
+                                    <li class="stat-item"><span class="stat-label">연령</span><span class="stat-value">38세</span></li>
+                                    <li class="stat-item"><span class="stat-label">외모</span><span class="stat-value">160cm · 49kg · E컵</span></li>
+                                    <li class="stat-item"><span class="stat-label">MBTI</span><span class="stat-value">ISFJ-A · 2w1 sp/so</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="character-card">
+                        <div class="img-wrapper"><img src="https://drlum.net/kni/e102.png" alt="엘리제"></div>
+                        <div class="info-wrapper">
+                            <div class="name-role">
+                                <h2 class="name">엘리제</h2>
+                                <span class="role">사업가</span>
+                            </div>
+                            <div class="flavor-text">아버지의 사업 수완을 물려받은 당찬 딸.<br>안타깝게도 어머니의 우월한<br>'재능'은 물려받지 못했다.</div>
+                            <div class="stats-wrapper">
+                                <div class="divider"></div>
+                                <ul class="stats-list">
+                                    <li class="stat-item"><span class="stat-label">연령</span><span class="stat-value">20세</span></li>
+                                    <li class="stat-item"><span class="stat-label">외모</span><span class="stat-value">150cm · 40kg · A컵</span></li>
+                                    <li class="stat-item"><span class="stat-label">MBTI</span><span class="stat-value">ENTJ-A · 3w4 sp/so</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="group-section">
+            <h2 class="group-title">마탑</h2>
+            <div class="container">
+                <div class="row">
+                    <article class="character-card">
+                        <div class="img-wrapper"><img src="https://drlum.net/kni/c101.png" alt="사이먼"></div>
+                        <div class="info-wrapper">
+                            <div class="name-role">
+                                <h2 class="name">사이먼</h2>
+                                <span class="role">마탑의 주인</span>
+                            </div>
+                            <div class="flavor-text">세상이 너무 평화로워 자신의 마법 재능을<br>뽐낼 길이 없는 것이 그저 불만인 마탑주.</div>
+                            <div class="stats-wrapper">
+                                <div class="divider"></div>
+                                <ul class="stats-list">
+                                    <li class="stat-item"><span class="stat-label">연령</span><span class="stat-value">39세</span></li>
+                                    <li class="stat-item"><span class="stat-label">외모</span><span class="stat-value">188cm · 85kg</span></li>
+                                    <li class="stat-item"><span class="stat-label">MBTI</span><span class="stat-value">ENTP-A · 7w6 so/sp</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="character-card">
+                        <div class="img-wrapper"><img src="https://drlum.net/kni/j101.png" alt="주디"></div>
+                        <div class="info-wrapper">
+                            <div class="name-role">
+                                <h2 class="name">주디</h2>
+                                <span class="role">마탑의 제자</span>
+                            </div>
+                            <div class="flavor-text">사람과 대화하는 것보다<br>마법 공식이 더 편안한 천재 마법사 소녀.</div>
+                            <div class="stats-wrapper">
+                                <div class="divider"></div>
+                                <ul class="stats-list">
+                                    <li class="stat-item"><span class="stat-label">연령</span><span class="stat-value">22세</span></li>
+                                    <li class="stat-item"><span class="stat-label">외모</span><span class="stat-value">152cm · 41kg · A컵</span></li>
+                                    <li class="stat-item"><span class="stat-label">MBTI</span><span class="stat-value">INFP-T · 5w4 sp/sx</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="group-section">
+            <h2 class="group-title">독립 세력</h2>
+            <div class="container">
+                <div class="row">
+                    <article class="character-card">
+                        <div class="img-wrapper"><img src="https://drlum.net/kni/t101.png" alt="타지아"></div>
+                        <div class="info-wrapper">
+                            <div class="name-role">
+                                <h2 class="name">타지아</h2>
+                                <span class="role">모험가</span>
+                            </div>
+                            <div class="flavor-text">건강미 넘치는 열혈 모험가.<br>그녀는 오늘도 새로운 의뢰를 찾아<br>길드 게시판을 서성인다.</div>
+                            <div class="stats-wrapper">
+                                <div class="divider"></div>
+                                <ul class="stats-list">
+                                    <li class="stat-item"><span class="stat-label">연령</span><span class="stat-value">26세</span></li>
+                                    <li class="stat-item"><span class="stat-label">외모</span><span class="stat-value">163cm · 49kg · C컵</span></li>
+                                    <li class="stat-item"><span class="stat-label">MBTI</span><span class="stat-value">ESTP-A · 8w7 sx/sp</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="character-card">
+                        <div class="img-wrapper"><img src="https://drlum.net/kni/m101.png" alt="마일즈"></div>
+                        <div class="info-wrapper">
+                            <div class="name-role">
+                                <h2 class="name">마일즈</h2>
+                                <span class="role">정보상</span>
+                            </div>
+                            <div class="flavor-text">정보는 확실하게, 수수료는 더더욱 확실하게!<br>왕국 뒷골목의 소문을 꽉 잡고 있는 유능한 정보상.</div>
+                            <div class="stats-wrapper">
+                                <div class="divider"></div>
+                                <ul class="stats-list">
+                                    <li class="stat-item"><span class="stat-label">연령</span><span class="stat-value">25세</span></li>
+                                    <li class="stat-item"><span class="stat-label">외모</span><span class="stat-value">184cm · 83kg</span></li>
+                                    <li class="stat-item"><span class="stat-label">MBTI</span><span class="stat-value">ENTP-A · 7w8 so/sp</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="https://w.soundcloud.com/player/api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var iframeElement = document.querySelector('#sc-widget');
+            var widget = SC.Widget(iframeElement);
+            var playBtn = document.getElementById('bgm-play');
+            var pauseBtn = document.getElementById('bgm-pause');
+
+            // 위젯이 준비되면 기본 볼륨을 40%로 설정
+            widget.bind(SC.Widget.Events.READY, function() {
+                widget.setVolume(40);
+            });
+
+            // 재생/정지 버튼 클릭 시 동작하는 함수
+            window.toggleBGM = function(isPlay) {
+                if (isPlay) {
+                    widget.play();
+                    playBtn.style.display = 'none';
+                    pauseBtn.style.display = 'inline-block';
+                } else {
+                    widget.pause();
+                    playBtn.style.display = 'inline-block';
+                    pauseBtn.style.display = 'none';
+                }
+            };
+        });
+    </script>
+</body>
+</html>
